@@ -1,0 +1,4 @@
+rootProject.name='MartiChallenge'
+include ':app'
+include ':ktx-api'
+include ':ktx-common'

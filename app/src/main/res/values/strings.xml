@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MartiChallenge</string>
+
+    <string name="Generic_msg">Loading..</string>
+    <string name="Generic_ok">Tamam</string>
+    <string name="Generic_err">Error</string>
+
+    <string name="Generic_Network_Error">Lütfen internet bağlantınızı kontrol ediniz</string>
+
+    <string name="Generic_Error">Bir Hata Oluştu 1</string>
+    <string name="Generic_Error_2">Bir Hata Oluştu 2</string>
+    <string name="Generic_Error_3">Bir Hata Oluştu 3</string>
+
+    <string name="Generic_Error_Http">Bağlantı Hatası</string>
+
+</resources>
