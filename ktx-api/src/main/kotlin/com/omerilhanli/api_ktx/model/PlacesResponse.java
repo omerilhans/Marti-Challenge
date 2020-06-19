@@ -1,25 +1,28 @@
-
 package com.omerilhanli.api_ktx.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.omerilhanli.api_ktx.model.place.Place;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PredictionResponse {
-    @SerializedName("predictions")
+public class PlacesResponse implements Serializable {
+
+    @SerializedName("results")
     @Expose
-    private List<Prediction> predictions = null;
+    private List<Place> results;
+
     @SerializedName("status")
     @Expose
     private String status;
 
-    public List<Prediction> getPredictions() {
-        return predictions;
+    public List<Place> getResults() {
+        return results;
     }
 
-    public void setPredictions(List<Prediction> predictions) {
-        this.predictions = predictions;
+    public void setResults(List<Place> results) {
+        this.results = results;
     }
 
     public String getStatus() {
@@ -29,5 +32,4 @@ public class PredictionResponse {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }

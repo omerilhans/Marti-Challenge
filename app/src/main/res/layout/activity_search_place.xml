@@ -3,15 +3,11 @@
 
     <data>
 
-        <import type="com.omerilhanli.martichallenge.ui.search.SearchPlaceViewModel" />
+        <import type="com.omerilhanli.martichallenge.ui.search.SearchPlacesViewModel" />
 
         <variable
             name="viewModel"
-            type="SearchPlaceViewModel" />
-
-        <variable
-            name="handler"
-            type="SearchPlaceViewModel" />
+            type="SearchPlacesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,16 +15,31 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.search.SearchPlaceActivity">
+        android:padding="12dp"
+        tools:context=".ui.search.SearchPlacesActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:hint="Type place text for searching..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="12dp"
+            android:text="@={viewModel.placeTypeText}"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_prediction"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

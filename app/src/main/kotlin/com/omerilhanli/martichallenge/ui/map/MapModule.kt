@@ -1,7 +1,9 @@
 package com.omerilhanli.martichallenge.ui.map
 
 import androidx.lifecycle.ViewModelProvider
+import com.omerilhanli.martichallenge.data.SearchPlacesRepository
 import com.omerilhanli.martichallenge.di.factory.ViewModelProviderFactory
+import com.omerilhanli.martichallenge.utils.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -9,8 +11,11 @@ import dagger.Provides
 class MapModule {
 
     @Provides
-    internal fun provideMapViewModel(): MapViewModel {
-        return MapViewModel()
+    internal fun provideMapViewModel(
+        searchPlacesRepository: SearchPlacesRepository,
+        schedulerProvider: SchedulerProvider
+    ): MapViewModel {
+        return MapViewModel(searchPlacesRepository, schedulerProvider)
     }
 
     @Provides

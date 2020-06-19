@@ -1,25 +1,25 @@
 package com.omerilhanli.martichallenge.ui.search
 
 import androidx.lifecycle.ViewModelProvider
-import com.omerilhanli.martichallenge.data.SearchRepository
+import com.omerilhanli.martichallenge.data.SearchPlacesRepository
 import com.omerilhanli.martichallenge.di.factory.ViewModelProviderFactory
 import com.omerilhanli.martichallenge.utils.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
 @Module
-class SearchPlaceModule {
+class SearchPlacesModule {
 
     @Provides
     internal fun provideSearchPlaceViewModel(
-        searchRepository: SearchRepository,
+        searchPlacesRepository: SearchPlacesRepository,
         schedulerProvider: SchedulerProvider
-    ): SearchPlaceViewModel {
-        return SearchPlaceViewModel(repository = searchRepository, scheduler = schedulerProvider)
+    ): SearchPlacesViewModel {
+        return SearchPlacesViewModel(placesRepository = searchPlacesRepository, scheduler = schedulerProvider)
     }
 
     @Provides
-    internal fun provideViewModelProvider(viewModel: SearchPlaceViewModel): ViewModelProvider.Factory {
+    internal fun provideViewModelProvider(viewModel: SearchPlacesViewModel): ViewModelProvider.Factory {
         return ViewModelProviderFactory(viewModel)
     }
 }

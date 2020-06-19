@@ -1,7 +1,7 @@
 package com.omerilhanli.martichallenge.di.module
 
 import com.omerilhanli.api_ktx.service.SearchService
-import com.omerilhanli.martichallenge.data.SearchRepository
+import com.omerilhanli.martichallenge.data.SearchPlacesRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -12,7 +12,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     @JvmStatic
-    internal fun provideUserRepository(searchService: SearchService): SearchRepository {
-        return SearchRepository(searchService)
+    internal fun provideUserRepository(searchService: SearchService): SearchPlacesRepository {
+        return SearchPlacesRepository(searchService)
     }
 }
