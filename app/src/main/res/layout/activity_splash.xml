@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_marti"
+        android:background="@color/color_marti_light"
         ext:runStatement="@{() -> handler.navigator.navigateMainActivity()}"
         tools:context=".ui.splash.SplashActivity">
 

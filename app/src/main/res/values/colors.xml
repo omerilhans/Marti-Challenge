@@ -4,7 +4,11 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="color_marti">#B3C69D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="color_marti">#74AC77</color>
+    <color name="color_marti_light">#9EC19F</color>
 
     <color name="ic_launcher_background">#FFFFFF</color>
 </resources>
