@@ -1,7 +1,9 @@
 package com.omerilhanli.martichallenge.ui.base
 
 import android.app.AlertDialog
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import com.omerilhanli.ktx_common.AppProgressBar
 import com.omerilhanli.martichallenge.R

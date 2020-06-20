@@ -13,4 +13,8 @@
 
     <string name="Generic_Error_Http">Bağlantı Hatası</string>
 
+    <string name="permission_denied_explanation">All the time location permission denied; needed for core
+        functionality.</string>
+
+
 </resources>

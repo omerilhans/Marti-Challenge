@@ -1,19 +1,24 @@
 package com.omerilhanli.martichallenge.ui.search
 
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import com.omerilhanli.api_ktx.model.place.Place
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.ActivitySearchPlaceBinding
-import com.omerilhanli.martichallenge.extensive.KEY_INTENT_PLACES
-import com.omerilhanli.martichallenge.extensive.bindAdapter
-import com.omerilhanli.martichallenge.extensive.startThis
+import com.omerilhanli.martichallenge.extensive.*
 import com.omerilhanli.martichallenge.ui.adapter.RecyclerPlacesAdapter
 import com.omerilhanli.martichallenge.ui.base.BaseActivity
 import com.omerilhanli.martichallenge.ui.map.MapActivity
+import com.omerilhanli.martichallenge.utils.PermissionUtil
 import javax.inject.Inject
 
 class SearchPlacesActivity : BaseActivity<SearchPlacesViewModel>(), SearchPlacesNavigator {
@@ -25,8 +30,21 @@ class SearchPlacesActivity : BaseActivity<SearchPlacesViewModel>(), SearchPlaces
     private lateinit var adapter: RecyclerPlacesAdapter
     private lateinit var binding: ActivitySearchPlaceBinding
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var mLocation: Location? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        if (!PermissionUtil.checkPermission(this)) {
+            PermissionUtil.requestPermission(this)
+        } else {
+            // Permission was granted. (SUCCESS)
+            getFindLastLocation()
+        }
+
         //
         prepareBinding()
         configUI()
@@ -72,6 +90,40 @@ class SearchPlacesActivity : BaseActivity<SearchPlacesViewModel>(), SearchPlaces
                 navigateMapActivity(place)
             }
         }
+    }
+
+    private fun getFindLastLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            mLocation = location
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+
+        if (requestCode == KEY_PERMISSIONS_REQUEST_CODE) {
+            if ((grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
+                (grantResults[1] == PackageManager.PERMISSION_GRANTED) &&
+                (grantResults[2] == PackageManager.PERMISSION_GRANTED)
+            ) {
+                // Permission was granted. (SUCCESS)
+                getFindLastLocation()
+            } else {
+                // Permission denied.
+                Snackbar.make(
+                    currentFocus!!,
+                    R.string.permission_denied_explanation,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction("Ayarlar'a giderek izin verebilirsiniz") {
+                    // Build intent that displays the App settings screen.
+                    openSetting()
+                }.show()
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun getViewModel(): SearchPlacesViewModel {

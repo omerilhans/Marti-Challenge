@@ -2,8 +2,11 @@ package com.omerilhanli.martichallenge.extensive
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.recyclerview.widget.RecyclerView
 import com.omerilhanli.api_ktx.model.place.Place
+import com.omerilhanli.martichallenge.BuildConfig
 import com.omerilhanli.martichallenge.ui.adapter.RecyclerPlacesAdapter
 import java.io.Serializable
 
@@ -29,4 +32,14 @@ fun <T : Serializable> Activity.startThis(
     startActivity(intent)
     if (isFinish)
         finish()
+}
+
+fun Activity.openSetting(){
+    // Build intent that displays the App settings screen.
+    val intent = Intent()
+    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+    val uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+    intent.data = uri
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    startActivity(intent)
 }
