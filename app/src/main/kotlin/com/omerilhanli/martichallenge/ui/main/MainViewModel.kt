@@ -11,25 +11,25 @@ import javax.inject.Inject
 
 class MainViewModel
 @Inject constructor(
-    private val repository: SearchRepository,
-    private val scheduler: SchedulerProvider
+    val repository: SearchRepository,
+    val scheduler: SchedulerProvider
 ) : BaseViewModel<MainNavigator>() {
 
-    var placeDetailResponse: PlaceDetailResponse?= null
+    var placeDetailResponse: PlaceDetailResponse? = null
     var placeTypeText: MutableLiveData<String> = MutableLiveData()
 
     val placesResponse: MutableLiveData<PlacesResponse> = MutableLiveData()
     val placeDetail: MutableLiveData<PlaceDetailResponse> = MutableLiveData()
 
-    fun getPlaces(placeType: String) {
+    fun getPlaces(placeType: String, locationStr: String) {
         compositeDisposable.add(
-            repository.getPlaces(placeType)
+            repository.getPlaces(placeType, locationStr)
                 .observeOn(scheduler.ui())
                 .subscribeOn(scheduler.io())
                 .subscribe({ response ->
                     placesResponse.value = response
                 }, { ex ->
-                    Log.e(ex.message, "operation failed.")
+                    Log.e("tag-for-error", "operation failed.")
                     setIsLoading(false)
                     navigator?.handleError(ex)
                 }, {
@@ -41,7 +41,7 @@ class MainViewModel
         )
     }
 
-    fun getPlaceDetails(placeId: String) {
+    fun getPlaceDetails(placeId: String?) {
         compositeDisposable.add(
             repository.getPlaceDetail(placeId)
                 .observeOn(scheduler.ui())
@@ -49,7 +49,7 @@ class MainViewModel
                 .subscribe({ response ->
                     placeDetail.value = response
                 }, { ex ->
-                    Log.e(ex.message, "operation failed.")
+                    Log.e("tag-for-error", "operation failed.")
                     setIsLoading(false)
                     navigator?.handleError(ex)
                 }, {

@@ -34,7 +34,7 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         })
     }
 
-    fun showPd() {
+    private fun showPd() {
         try {
             if (!isFinishing && !isDestroyed) {
                 if (appProgressBar.dialog == null || !appProgressBar.dialog!!.isShowing)
@@ -45,7 +45,7 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         }
     }
 
-    fun dismissPd() {
+    private fun dismissPd() {
         try {
             if (!isFinishing && !isDestroyed)
                 appProgressBar.dialog?.dismiss()
@@ -62,18 +62,22 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
                 .beginTransaction()
                 .disallowAddToBackStack()
                 .remove(fragment)
+                .setCustomAnimations(R.anim.fadein, R.anim.fadeout)
                 .commitNow()
         }
-        //.setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
     }
 
-    fun replaceFragment(@IdRes containerViewId: Int, @NonNull fragment: Fragment, @Nullable tag: String) {
+    fun replaceFragment(
+        @IdRes containerViewId: Int,
+        @NonNull fragment: Fragment,
+        @Nullable tag: String
+    ) {
         supportFragmentManager
             .beginTransaction()
             .disallowAddToBackStack()
             .replace(containerViewId, fragment, tag)
+            .setCustomAnimations(R.anim.fadein, R.anim.fadeout)
             .commitAllowingStateLoss()
-        //.setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
     }
 
     override fun onFragmentDetached(tag: String) {
@@ -96,21 +100,25 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         dialog.show()
     }
 
-    // TODO -> error mesajlar düzeltilecek !
-    fun getMessageFromError(error: Throwable): String {
-
-        var message: String? = null
-
+    private fun getMessageFromError(error: Throwable): String {
+        var message: String = ""
         when (error) {
             is HttpException -> {
                 if (error.response()?.code() == 400) {
-                    message = resources.getString(R.string.Generic_Error)
-                } else {
-                    message = resources.getString(R.string.Generic_Error_2)
+                    message = resources.getString(R.string.Generic_Error_400)
+                }
+                if (error.response()?.code() == 403) {
+                    message = resources.getString(R.string.Generic_Error_403)
+                }
+                if (error.response()?.code() == 404) {
+                    message = resources.getString(R.string.Generic_Error_404)
+                }
+                if (error.response()?.code() == 503) {
+                    message = resources.getString(R.string.Generic_Error_503)
                 }
             }
             else -> {
-                message = resources.getString(R.string.Generic_Error_3)
+                message = resources.getString(R.string.Generic_Error)
             }
         }
 

@@ -1,15 +1,79 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.71'
+    ext {
+        versions = [
+                sdk      : [
+                        target : 29,
+                        minSdkVersion : 21,
+                        compile: 29
+                ],
+                android  : [
+                        buildtools: '29.0.3'
+                ],
+                play     : [
+                        core     : '17.0.0',
+                        location : '17.0.0',
+                        maps     : '17.0.0',
+                        places   : '17.0.0'
+                ],
+                gradle   : [
+                        base: '3.6.3'
+                ],
+                kotlin   : [
+                        base      : '1.3.72',
+                        plugin    : '1.3.72'
+                ],
+                androidx : [
+                        appcompat              : '1.3.0-alpha01',
+                        material               : '1.3.0-alpha01',
+                        constraintlayout       : '2.0.0-beta7',
+                        recyclerview           : '1.1.0',
+                        cardview               : '1.0.0',
+                        ktxcore                : '1.3.0',
+                        lifecycle              : '2.2.0',
+                        lifecycle_viewmodel_ktx: '2.2.0',
+                        espresso               : '3.3.0-alpha02',
+                        junit                  : '1.1.2-alpha02',
+                        testrunner             : '1.3.0-alpha02',
+                        kapt                   : '3.6.3'
+                ],
+                glide    : [
+                        kapt: '4.10.0',
+                        base: '4.11.0'
+                ],
+                google   : [
+                        gson  : '2.8.6',
+                        dagger: '2.27',
+                        dagger_core: '2.25.2',
+                        map: '17.0.0',
+                        places: '2.3.0'
+                ],
+                junit    : [
+                        base: '4.12',
+                ],
+                mockito  : [
+                        core: '3.0.0'
+                ],
+                rxjava   : [
+                        base   : '2.2.12',
+                        android: '2.1.1'
+                ],
+                square: [
+                        retrofit2: '2.6.2',
+                        okhttp3  : '3.12.6'
+                ]
+        ]
+    }
+
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.android.tools.build:gradle:$versions.gradle.base"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin.plugin"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,7 +84,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
     }
 }
 

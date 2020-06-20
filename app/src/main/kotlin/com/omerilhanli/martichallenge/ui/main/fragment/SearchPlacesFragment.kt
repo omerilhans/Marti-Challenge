@@ -101,7 +101,8 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
                 return@setOnEditorActionListener true
             }
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.getPlaces(placeType)
+                val locationStr = "${mLocation?.latitude},${mLocation?.longitude}"
+                viewModel.getPlaces(placeType, locationStr)
             }
             true
         }
@@ -125,8 +126,7 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
     ) {
         if (requestCode == KEY_PERMISSIONS_REQUEST_CODE) {
             if ((grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
-                (grantResults[1] == PackageManager.PERMISSION_GRANTED) &&
-                (grantResults[2] == PackageManager.PERMISSION_GRANTED)
+                (grantResults[1] == PackageManager.PERMISSION_GRANTED)
             ) {
                 // Permission was granted. (SUCCESS)
                 getFindLastLocation()
@@ -134,10 +134,9 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
                 // Permission denied.
                 Snackbar.make(
                     view!!,
-                    "R.string.permission_denied_explanation",
+                    R.string.Permission_denied_explanation,
                     Snackbar.LENGTH_INDEFINITE
-                ).setAction("Ayarlar'a giderek izin verebilirsiniz") {
-                    // Build intent that displays the App settings screen.
+                ).setAction(R.string.Generic_yes) {
                     activity?.openSetting()
                 }.show()
             }

@@ -4,22 +4,56 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion versions.sdk.compile
+    buildToolsVersion versions.android.buildtools
+
+    def versionPropsFile = file('version.properties')
+    if (!versionPropsFile.canRead()) {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(versionPropsFile))
+
+    def versionMajor = versionProps['version_major'].toInteger()
+    def versionMinor = versionProps['version_minor'].toInteger()
+    def versionPatch = versionProps['version_patch'].toInteger()
+    def versionBuild = versionProps['version_build'].toInteger()
+
+    def taskNames = gradle.startParameter.taskNames
+    String currentDir = gradle.startParameter.currentDir
+
+    if (currentDir.endsWith(project.name) && ('bundle' in taskNames || 'assemble' in taskNames)) {
+        println "+ Task names are $taskNames"
+        versionBuild++
+        versionProps['version_build'] = versionBuild.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+        println "+ The build number is $versionBuild for ${project.name}"
+    }
 
     defaultConfig {
         applicationId "com.omerilhanli.martichallenge"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-
+        minSdkVersion versions.sdk.minSdkVersion
+        targetSdkVersion versions.sdk.target
+        versionCode versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "martichallenge-$versionName.$versionCode")
     }
 
     buildTypes {
-        release {
+        debug {
+            buildConfigField 'String', 'BASE_URL', '"https://maps.googleapis.com/maps/"'
+            debuggable true
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField 'String', 'BASE_URL', '"https://maps.googleapis.com/maps/"'
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -33,65 +67,64 @@ android {
     }
 }
 
-
 kapt {
     generateStubs = true
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    kapt "com.android.databinding:compiler:3.6.3"
 
     implementation project(":ktx-api")
     implementation project(":ktx-common")
 
-    // Support
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "androidx.cardview:cardview:1.0.0"
+    testImplementation "junit:junit:$versions.junit.base"
+    androidTestImplementation "androidx.test.ext:junit:$versions.androidx.junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.androidx.espresso"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin.base"
+
+    // Support
+    implementation "androidx.core:core-ktx:$versions.androidx.ktxcore"
+    implementation "androidx.appcompat:appcompat:$versions.androidx.appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintlayout"
+    implementation "com.google.android.material:material:$versions.androidx.material"
+    implementation "androidx.recyclerview:recyclerview:$versions.androidx.recyclerview"
+    implementation "androidx.cardview:cardview:$versions.androidx.cardview"
+
+    // Databinding kapt
+    kapt "com.android.databinding:compiler:$versions.androidx.kapt"
 
     // LiveData
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-
-    // Dagger
-    implementation 'com.google.dagger:dagger:2.27'
-    kapt 'com.google.dagger:dagger-compiler:2.25.2'
-    kapt 'com.google.dagger:dagger-android-processor:2.25.2'
-    implementation 'com.google.dagger:dagger-android-support:2.25.2'
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidx.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidx.lifecycle_viewmodel_ktx"
 
     // Google Gson
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "com.google.code.gson:gson:$versions.google.gson"
 
-    // Map & Places
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.libraries.places:places:2.3.0'
+    // Google Map & Places
+    implementation "com.google.android.gms:play-services-maps:$versions.google.maps"
+    implementation "com.google.android.libraries.places:places:$versions.google.places"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$versions.google.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.google.dagger_core"
+    kapt "com.google.dagger:dagger-android-processor:$versions.google.dagger_core"
+    implementation "com.google.dagger:dagger-android-support:$versions.google.dagger_core"
 
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.12.6'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.6'
+    implementation "com.squareup.retrofit2:retrofit:$versions.square.retrofit2"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.square.retrofit2"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.square.retrofit2"
+    implementation "com.squareup.okhttp3:okhttp:$versions.square.okhttp3"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.square.okhttp3"
 
     // Glide
-    kapt 'com.github.bumptech.glide:compiler:4.10.0'
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt "com.github.bumptech.glide:compiler:$versions.glide.kapt"
+    implementation "com.github.bumptech.glide:glide:$versions.glide.base"
 
-    // Reactive
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
+    // Reactive X
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava.base"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxjava.android"
 }

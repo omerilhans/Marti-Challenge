@@ -38,8 +38,8 @@ class RecyclerPlacesAdapter(var placeList: List<Place>) :
     }
 
     //
-    fun update(places: List<Place>) {
-        this.placeList = places
+    fun update(places: List<Place>?) {
+        this.placeList = places ?: emptyList()
         notifyDataSetChanged()
     }
 

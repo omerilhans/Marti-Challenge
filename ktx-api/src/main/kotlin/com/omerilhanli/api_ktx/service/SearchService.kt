@@ -1,5 +1,13 @@
 package com.omerilhanli.api_ktx.service
 
+import com.omerilhanli.api_ktx.BuildConfig
+import com.omerilhanli.api_ktx.common.Attribute.KEY_LOCATION
+import com.omerilhanli.api_ktx.common.Attribute.KEY_PLACE_ID
+import com.omerilhanli.api_ktx.common.Attribute.KEY_RADIUS
+import com.omerilhanli.api_ktx.common.Attribute.KEY_TAG
+import com.omerilhanli.api_ktx.common.Attribute.KEY_TYPE
+import com.omerilhanli.api_ktx.common.EndPoint.KEY_NEARBY_PLACES
+import com.omerilhanli.api_ktx.common.EndPoint.KEY_PLACE_DETAILS
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
 import com.omerilhanli.api_ktx.model.PlacesResponse
 import io.reactivex.Observable
@@ -8,26 +16,17 @@ import retrofit2.http.Query
 
 interface SearchService {
 
-    companion object {
-        const val KEY_API = "AIzaSyDI1uvBMNBrS008eT9W6s1AMNfG1wUS4t8"
-    }
-
-    @GET("api/place/nearbysearch/json")
+    @GET(KEY_NEARBY_PLACES)
     fun getPlaces(
-        @Query("location") location: String,
-        @Query("type") type: String,
-        @Query("radius") radius: Int = 5000,
-        @Query("key") key: String = KEY_API
+        @Query(KEY_LOCATION) location: String,
+        @Query(KEY_TYPE) type: String,
+        @Query(KEY_RADIUS) radius: Int = 5000,
+        @Query(KEY_TAG) key: String = BuildConfig.KEY_API
     ): Observable<PlacesResponse>
 
-    @GET("api/place/details/json")
+    @GET(KEY_PLACE_DETAILS)
     fun getPlaceDetails(
-        @Query("placeid") placeId: String?,
-        @Query("key") key: String = KEY_API
+        @Query(KEY_PLACE_ID) placeId: String?,
+        @Query(KEY_TAG) key: String = BuildConfig.KEY_API
     ): Observable<PlaceDetailResponse>
 }
-/*
-https://maps.googleapis.com/maps/api/place/nearbysearch/json?
-location=41.0548963,28.834197&radius=1500&type=restaurant&keyword=yemek
-&key=AIzaSyDI1uvBMNBrS008eT9W6s1AMNfG1wUS4t8
- */

@@ -29,7 +29,7 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentMapBinding
 
-    private var googleMap: GoogleMap?=null
+    private var googleMap: GoogleMap? = null
     private lateinit var place: Place
     private lateinit var placeDetailResponse: PlaceDetailResponse
 
@@ -88,8 +88,8 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
             with(it) {
                 placeDetailResponse = this
                 val latLng = LatLng(
-                    result.geometry.location.lat,
-                    result.geometry.location.lng
+                    result?.geometry?.location?.lat ?: 0.0,
+                    result?.geometry?.location?.lng ?: 0.0
                 )
                 addMarkerAndMoveCamera(latLng)
             }

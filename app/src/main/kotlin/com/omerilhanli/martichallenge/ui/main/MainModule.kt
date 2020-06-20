@@ -11,11 +11,11 @@ import dagger.Provides
 class MainModule {
 
     @Provides
-    internal fun provideSearchPlaceViewModel(
-        searchRepository: SearchRepository,
-        schedulerProvider: SchedulerProvider
+    internal fun provideMainViewModel(
+        repository: SearchRepository,
+        scheduler: SchedulerProvider
     ): MainViewModel {
-        return MainViewModel(repository = searchRepository, scheduler = schedulerProvider)
+        return MainViewModel(repository = repository, scheduler = scheduler)
     }
 
     @Provides

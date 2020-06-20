@@ -2,6 +2,7 @@ package com.omerilhanli.martichallenge.di.module
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.omerilhanli.martichallenge.BuildConfig
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -19,7 +20,7 @@ object NetworkModule {
     @Provides
     @JvmStatic
     internal fun provideBaseUrl(): String {
-        return "https://maps.googleapis.com/maps/"
+        return BuildConfig.BASE_URL
     }
 
     @Singleton
