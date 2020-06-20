@@ -1,15 +1,14 @@
 package com.omerilhanli.martichallenge.ui.base
 
 import android.app.AlertDialog
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.omerilhanli.ktx_common.AppProgressBar
+import com.omerilhanli.ktx_common.dialog.AppAlert
+import com.omerilhanli.ktx_common.dialog.AppProgressBar
 import com.omerilhanli.martichallenge.R
 import dagger.android.support.DaggerAppCompatActivity
 import retrofit2.HttpException
@@ -19,7 +18,8 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
     abstract fun getViewModel(): T
 
     private var viewModel: T? = null
-    private val appProgressBar = AppProgressBar()
+    private val appProgressBar =
+        AppProgressBar()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,20 +88,17 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         showErrorMessage(getMessageFromError(error))
     }
 
-    fun showErrorMessage(message: String) {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.Generic_err))
-            .setMessage(message)
-            .setPositiveButton(getString(R.string.Generic_ok)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-
-        dialog.show()
+    private fun showErrorMessage(message: String) {
+        AppAlert.showAlert(
+            this,
+            getString(R.string.Generic_err),
+            message,
+            getString(R.string.Generic_ok)
+        )
     }
 
     private fun getMessageFromError(error: Throwable): String {
-        var message: String = ""
+        var message = ""
         when (error) {
             is HttpException -> {
                 if (error.response()?.code() == 400) {

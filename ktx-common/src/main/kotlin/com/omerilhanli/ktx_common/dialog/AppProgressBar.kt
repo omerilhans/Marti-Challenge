@@ -1,4 +1,4 @@
-package com.omerilhanli.ktx_common
+package com.omerilhanli.ktx_common.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.omerilhanli.ktx_common.R
 
 class AppProgressBar {
 
@@ -24,7 +25,7 @@ class AppProgressBar {
             ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.MATCH_PARENT
         )
-        dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#00ffffff")))
+        dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.parseColor(context.getString(R.string.color_dialog_background))))
 
         val view = inflater.inflate(R.layout.app_progress_bar, null)
         dialog?.setCancelable(cancelable)

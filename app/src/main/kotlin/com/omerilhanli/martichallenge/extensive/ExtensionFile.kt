@@ -1,14 +1,17 @@
 package com.omerilhanli.martichallenge.extensive
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.omerilhanli.api_ktx.model.place.Place
 import com.omerilhanli.martichallenge.BuildConfig
+import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.ui.adapter.RecyclerPlacesAdapter
-import java.io.Serializable
 
 fun RecyclerView.bindAdapter(placeList: List<Place>): RecyclerPlacesAdapter {
     val adapter = RecyclerPlacesAdapter(placeList)
@@ -17,24 +20,14 @@ fun RecyclerView.bindAdapter(placeList: List<Place>): RecyclerPlacesAdapter {
     return adapter
 }
 
-fun Activity.startThis(activityClass: Class<*>) {
-    val intent = Intent(this, activityClass)
-    startActivity(intent)
-    finish()
-}
-
-fun <T : Serializable> Activity.startThis(
+fun Activity.startThis(
     activityClass: Class<*>, intentKey: String = "",
-    intentValue: String = "", intentObject: T? = null,
-    isFinish: Boolean = false
+    intentValue: String = "", isFinish: Boolean = false
 ) {
     val intent = Intent(this, activityClass)
     if (intentValue.isNotEmpty()) {
         intent.putExtra(intentKey, intentValue)
-    } else if (intentObject != null) {
-        intent.putExtra(intentKey, intentObject)
     }
-
     startActivity(intent)
     if (isFinish)
         finish()
@@ -48,4 +41,13 @@ fun Activity.openSetting() {
     intent.data = uri
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
     startActivity(intent)
+}
+
+fun Context.openUrlInTabBrowser(url: String?) {
+    url?.let {
+        val builder = CustomTabsIntent.Builder()
+        builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(url))
+    }
 }

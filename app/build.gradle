@@ -65,6 +65,11 @@ android {
     sourceSets {
         main.java.srcDirs = ['src/main/kotlin']
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 kapt {
@@ -127,4 +132,6 @@ dependencies {
     // Reactive X
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava.base"
     implementation "io.reactivex.rxjava2:rxandroid:$versions.rxjava.android"
+
+    implementation "androidx.browser:browser:$versions.androidx.browser"
 }

@@ -1,4 +1,4 @@
-package com.omerilhanli.api_ktx.common
+package com.omerilhanli.api_ktx.constant
 
 object Attribute {
     const val KEY_LOCATION = "location"

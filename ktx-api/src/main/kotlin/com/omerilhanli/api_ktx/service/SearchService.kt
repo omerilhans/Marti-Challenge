@@ -1,13 +1,13 @@
 package com.omerilhanli.api_ktx.service
 
 import com.omerilhanli.api_ktx.BuildConfig
-import com.omerilhanli.api_ktx.common.Attribute.KEY_LOCATION
-import com.omerilhanli.api_ktx.common.Attribute.KEY_PLACE_ID
-import com.omerilhanli.api_ktx.common.Attribute.KEY_RADIUS
-import com.omerilhanli.api_ktx.common.Attribute.KEY_TAG
-import com.omerilhanli.api_ktx.common.Attribute.KEY_TYPE
-import com.omerilhanli.api_ktx.common.EndPoint.KEY_NEARBY_PLACES
-import com.omerilhanli.api_ktx.common.EndPoint.KEY_PLACE_DETAILS
+import com.omerilhanli.api_ktx.constant.Attribute.KEY_LOCATION
+import com.omerilhanli.api_ktx.constant.Attribute.KEY_PLACE_ID
+import com.omerilhanli.api_ktx.constant.Attribute.KEY_RADIUS
+import com.omerilhanli.api_ktx.constant.Attribute.KEY_TAG
+import com.omerilhanli.api_ktx.constant.Attribute.KEY_TYPE
+import com.omerilhanli.api_ktx.constant.EndPoint.KEY_NEARBY_PLACES
+import com.omerilhanli.api_ktx.constant.EndPoint.KEY_PLACE_DETAILS
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
 import com.omerilhanli.api_ktx.model.PlacesResponse
 import io.reactivex.Observable

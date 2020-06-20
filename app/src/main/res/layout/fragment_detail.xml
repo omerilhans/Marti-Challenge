@@ -18,103 +18,102 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.detail.DetailActivity">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_middle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <TextView
-            android:id="@+id/tv_title_name"
+        <ImageView
+            android:id="@+id/img_place_detail_photo"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/Place_detail_title_name"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
+            android:layout_height="200dp"
+            android:src="@drawable/icn_place"
+            app:bindPhotoReference="@{viewModel.placeDetail.result.photos[0].photo_reference}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:padding="8dp"
-            android:text="@{viewModel.placeDetailResponse.result.name}"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_with_border"
+            android:paddingTop="16dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_middle"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Yemek Yeri 1" />
-
-        <TextView
-            android:id="@+id/tv_title_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/Place_detail_title_address"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_name" />
+            app:layout_constraintTop_toBottomOf="@+id/img_place_detail_photo">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:padding="8dp"
-            android:text="@{viewModel.placeDetailResponse.result.formatted_address}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_middle"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_name"
-            tools:text="Yemek Yeri 2" />
+            <TextView
+                android:id="@+id/tv_place_detail_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@{viewModel.placeDetailResponse.result.name}"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Bank Asia Ltd Şti" />
 
-        <TextView
-            android:id="@+id/tv_title_rating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/Place_detail_title_average_rate"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_address" />
+            <TextView
+                android:id="@+id/tv_place_detail_average_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@{String.valueOf(viewModel.placeDetailResponse.result.rating)}"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_place_detail_name"
+                tools:text="4.2" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:padding="8dp"
-            android:text="@{String.valueOf(viewModel.placeDetailResponse.result.rating)}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_middle"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_address"
-            tools:text="Rating 3.2" />
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="@style/customRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:isIndicator="true"
+                android:stepSize="0.1"
+                app:bindRating="@{viewModel.placeDetailResponse.result.rating}"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_place_detail_average_rate"
+                app:layout_constraintStart_toEndOf="@+id/tv_place_detail_average_rate"
+                app:layout_constraintTop_toTopOf="@+id/tv_place_detail_average_rate"
+                tools:rating="3.4" />
 
-        <TextView
-            android:id="@+id/tv_title_total_rate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/Place_detail_title_total_rate"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_rating" />
+            <TextView
+                android:id="@+id/tv_place_phone_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icn_phone"
+                android:drawablePadding="8dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="4"
+                android:padding="12dp"
+                android:text="@{viewModel.placeDetailResponse.result.international_phone_number}"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating_bar"
+                tools:text="0212 123 45 67" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:padding="8dp"
-            android:text="@{String.valueOf(viewModel.placeDetailResponse.result.user_ratings_total)}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_middle"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_rating"
-            tools:text="Total Rating 32" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:padding="12dp"
+                android:text="@{viewModel.placeDetailResponse.result.formatted_address}"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_place_phone_number"
+                tools:text="İstanbul Göztepe" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

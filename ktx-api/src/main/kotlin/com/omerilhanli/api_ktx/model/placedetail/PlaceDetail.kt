@@ -3,6 +3,7 @@ package com.omerilhanli.api_ktx.model.placedetail
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.omerilhanli.api_ktx.model.common.Geometry
+import com.omerilhanli.api_ktx.model.common.Photo
 import java.io.Serializable
 
 data class PlaceDetail(
@@ -24,6 +25,9 @@ data class PlaceDetail(
     @SerializedName("name")
     @Expose
     var name: String? = null,
+    @SerializedName("photos")
+    @Expose
+    var photos: List<Photo>? = null,
     @SerializedName("rating")
     @Expose
     var rating: Double? = 0.0,
@@ -39,4 +43,4 @@ data class PlaceDetail(
     @SerializedName("vicinity")
     @Expose
     var vicinity: String? = null
-): Serializable
+) : Serializable

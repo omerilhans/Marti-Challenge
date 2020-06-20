@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.omerilhanli.ktx_common.DURATION_TIME_MILLIS
+import com.omerilhanli.ktx_common.extensive.DURATION_TIME_MILLIS
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.ActivitySplashBinding
 import com.omerilhanli.martichallenge.extensive.startThis
@@ -46,7 +46,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(), SplashNavigator {
     }
 
     override fun navigateMainActivity() {
-        handler?.postDelayed(runnable, DURATION_TIME_MILLIS)
+        handler?.postDelayed(runnable,
+            DURATION_TIME_MILLIS
+        )
     }
 
     override fun onDestroy() {

@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
 import com.omerilhanli.api_ktx.model.place.Place
-import com.omerilhanli.ktx_common.KEY_INTENT_PLACE
+import com.omerilhanli.ktx_common.extensive.KEY_INTENT_PLACE
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.FragmentMapBinding
 import com.omerilhanli.martichallenge.ui.base.BaseFragment
@@ -117,6 +117,8 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
         this.googleMap?.setOnMarkerClickListener(this)
+        this.googleMap?.uiSettings?.isCompassEnabled = true
+        this.googleMap?.uiSettings?.isZoomControlsEnabled = true
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {

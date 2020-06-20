@@ -1,12 +1,16 @@
 package com.omerilhanli.martichallenge.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
 import com.omerilhanli.api_ktx.model.place.Place
+import com.omerilhanli.ktx_common.extensive.CHALLENGE_GITHUB_LINK
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.ActivityMainBinding
+import com.omerilhanli.martichallenge.extensive.openUrlInTabBrowser
 import com.omerilhanli.martichallenge.ui.base.BaseActivity
 import com.omerilhanli.martichallenge.ui.main.fragment.DetailFragment
 import com.omerilhanli.martichallenge.ui.main.fragment.MapFragment
@@ -59,6 +63,18 @@ class MainActivity : BaseActivity<MainViewModel>(), MainNavigator {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_link, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_link -> openUrlInTabBrowser(CHALLENGE_GITHUB_LINK)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun showSearchPlacesFragment() {
         replaceFragment(
             R.id.frame_container,
@@ -83,5 +99,4 @@ class MainActivity : BaseActivity<MainViewModel>(), MainNavigator {
             DetailFragment.TAG
         )
     }
-
 }

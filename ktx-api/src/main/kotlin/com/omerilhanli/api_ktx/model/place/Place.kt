@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.omerilhanli.api_ktx.model.common.Geometry
 import com.omerilhanli.api_ktx.model.common.OpeningHours
+import com.omerilhanli.api_ktx.model.common.Photo
 import java.io.Serializable
 
 data class Place(
@@ -22,6 +23,9 @@ data class Place(
     @SerializedName("opening_hours")
     @Expose
     var opening_hours: OpeningHours? = null,
+    @SerializedName("photos")
+    @Expose
+    var photos: List<Photo>? = null,
     @SerializedName("place_id")
     @Expose
     var place_id: String? = null,
@@ -40,4 +44,4 @@ data class Place(
     @SerializedName("vicinity")
     @Expose
     var vicinity: String? = null
-): Serializable
+) : Serializable

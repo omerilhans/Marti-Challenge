@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
-import com.omerilhanli.ktx_common.KEY_INTENT_PLACE_DETAIL
+import com.omerilhanli.ktx_common.extensive.KEY_INTENT_PLACE_DETAIL
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.FragmentDetailBinding
 import com.omerilhanli.martichallenge.ui.base.BaseFragment
@@ -23,12 +23,8 @@ class DetailFragment : BaseFragment<MainViewModel>() {
 
     override fun getViewModel(): MainViewModel {
         viewModel = activity?.run {
-            ViewModelProvider(
-                activity!!,
-                factory
-            ).get(MainViewModel::class.java)
-        }
-            ?: throw Exception("Invalid Activity")
+            ViewModelProvider(activity!!, factory).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         return viewModel
     }
 
@@ -58,11 +54,8 @@ class DetailFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun extractDataFromIntent() {
-        viewModel.placeDetailResponse = arguments?.getSerializable(KEY_INTENT_PLACE_DETAIL) as PlaceDetailResponse
-    }
-
-    private fun bindData() {
-
+        viewModel.placeDetailResponse =
+            arguments?.getSerializable(KEY_INTENT_PLACE_DETAIL) as PlaceDetailResponse
     }
 
     companion object {

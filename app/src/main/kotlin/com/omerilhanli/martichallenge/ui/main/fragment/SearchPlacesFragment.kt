@@ -14,8 +14,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.omerilhanli.api_ktx.model.place.Place
-import com.omerilhanli.ktx_common.KEY_PERMISSIONS_REQUEST_CODE
-import com.omerilhanli.ktx_common.PermissionUtil
+import com.omerilhanli.ktx_common.dialog.AppAlert
+import com.omerilhanli.ktx_common.extensive.KEY_PERMISSIONS_REQUEST_CODE
+import com.omerilhanli.ktx_common.util.PermissionUtil
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.FragmentSearchPlacesBinding
 import com.omerilhanli.martichallenge.extensive.bindAdapter
@@ -85,7 +86,7 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun configUI() {
-        adapter = binding.recyclerPrediction.bindAdapter(emptyList())
+        adapter = binding.recyclerPlaces.bindAdapter(emptyList())
         adapter.itemClickListener = object : RecyclerPlacesAdapter.ItemClickListener {
             override fun onClickItem(place: Place) {
                 viewModel.navigator?.showMapFragment(place)
@@ -96,10 +97,6 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
     private fun configObserving() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             val placeType = viewModel.placeTypeText.value as String
-
-            if (placeType.length < 3) {
-                return@setOnEditorActionListener true
-            }
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val locationStr = "${mLocation?.latitude},${mLocation?.longitude}"
                 viewModel.getPlaces(placeType, locationStr)
@@ -116,6 +113,7 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
     private fun getFindLastLocation() {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             mLocation = location
+            binding.locationStr = "${mLocation?.latitude},${mLocation?.longitude}"
         }
     }
 
@@ -130,6 +128,7 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
             ) {
                 // Permission was granted. (SUCCESS)
                 getFindLastLocation()
+
             } else {
                 // Permission denied.
                 Snackbar.make(
