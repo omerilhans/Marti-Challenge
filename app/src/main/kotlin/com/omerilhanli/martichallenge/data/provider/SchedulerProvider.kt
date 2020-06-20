@@ -1,4 +1,4 @@
-package com.omerilhanli.martichallenge.utils
+package com.omerilhanli.martichallenge.data.provider
 
 import io.reactivex.Scheduler
 

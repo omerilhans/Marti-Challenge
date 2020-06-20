@@ -4,6 +4,10 @@ import android.app.AlertDialog
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.IdRes
+import androidx.annotation.NonNull
+import androidx.annotation.Nullable
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.omerilhanli.ktx_common.AppProgressBar
 import com.omerilhanli.martichallenge.R
@@ -48,6 +52,32 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun removeFragment(tag: String) {
+        val fragmentManager = supportFragmentManager
+        val fragment = fragmentManager.findFragmentByTag(tag)
+        if (fragment != null) {
+            fragmentManager
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .remove(fragment)
+                .commitNow()
+        }
+        //.setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+    }
+
+    fun replaceFragment(@IdRes containerViewId: Int, @NonNull fragment: Fragment, @Nullable tag: String) {
+        supportFragmentManager
+            .beginTransaction()
+            .disallowAddToBackStack()
+            .replace(containerViewId, fragment, tag)
+            .commitAllowingStateLoss()
+        //.setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+    }
+
+    override fun onFragmentDetached(tag: String) {
+        removeFragment(tag)
     }
 
     override fun handleError(error: Throwable) {

@@ -17,6 +17,12 @@ fun RecyclerView.bindAdapter(placeList: List<Place>): RecyclerPlacesAdapter {
     return adapter
 }
 
+fun Activity.startThis(activityClass: Class<*>) {
+    val intent = Intent(this, activityClass)
+    startActivity(intent)
+    finish()
+}
+
 fun <T : Serializable> Activity.startThis(
     activityClass: Class<*>, intentKey: String = "",
     intentValue: String = "", intentObject: T? = null,
@@ -34,7 +40,7 @@ fun <T : Serializable> Activity.startThis(
         finish()
 }
 
-fun Activity.openSetting(){
+fun Activity.openSetting() {
     // Build intent that displays the App settings screen.
     val intent = Intent()
     intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS

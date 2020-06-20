@@ -1,7 +1,7 @@
 package com.omerilhanli.martichallenge.di.module
 
-import com.omerilhanli.martichallenge.utils.SchedulerProvider
-import com.omerilhanli.martichallenge.utils.AppSchedulerProvider
+import com.omerilhanli.martichallenge.data.provider.SchedulerProvider
+import com.omerilhanli.martichallenge.data.provider.AppSchedulerProvider
 import dagger.Module
 import dagger.Provides
 

@@ -5,15 +5,15 @@
 
     <data>
 
-        <import type="com.omerilhanli.martichallenge.ui.map.MapViewModel" />
+        <import type="com.omerilhanli.martichallenge.ui.main.MainViewModel" />
 
         <variable
             name="viewModel"
-            type="MapViewModel" />
+            type="MainViewModel" />
 
         <variable
             name="handler"
-            type="MapViewModel" />
+            type="MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

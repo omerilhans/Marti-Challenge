@@ -1,4 +1,4 @@
-package com.omerilhanli.martichallenge.ui.detail
+package com.omerilhanli.martichallenge.ui.splash
 
 import androidx.lifecycle.ViewModelProvider
 import com.omerilhanli.martichallenge.di.factory.ViewModelProviderFactory
@@ -6,15 +6,15 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class DetailModule  {
+class SplashModule {
 
     @Provides
-    internal fun provideDetailViewModel(): DetailViewModel {
-        return DetailViewModel()
+    internal fun provideSplashViewModel(): SplashViewModel {
+        return SplashViewModel()
     }
 
     @Provides
-    internal fun provideViewModelProvider(viewModel: DetailViewModel): ViewModelProvider.Factory {
+    internal fun provideViewModelProvider(viewModel: SplashViewModel): ViewModelProvider.Factory {
         return ViewModelProviderFactory(viewModel)
     }
 }

@@ -1,9 +1,9 @@
-package com.omerilhanli.martichallenge.data
+package com.omerilhanli.martichallenge.data.repository
 
 import com.omerilhanli.api_ktx.service.SearchService
 import javax.inject.Inject
 
-class SearchPlacesRepository
+class SearchRepository
 @Inject
 constructor(private val searchService: SearchService) {
 
