@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainViewModel>(), MainNavigator {
 
-    private lateinit var mSelectedPlace: Place
+    private lateinit var mSelectedPlace: Place // seçilen place fragmentler arası paylaşılır
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainNavigator {
         viewModel.navigator = this
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed() { // 3 fragment için ilgili back işlemi gerçekleştirilir
         supportFragmentManager.fragments.forEachIndexed { _, fragment ->
             when (fragment) {
                 is MapFragment -> {

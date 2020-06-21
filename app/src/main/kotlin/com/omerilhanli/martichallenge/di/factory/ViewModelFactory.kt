@@ -22,7 +22,7 @@ constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>
                 }
             }
         }
-        requireNotNull(creator) { "unknown model class $modelClass" }
+        requireNotNull(creator) { "Unknown model class $modelClass" }
         try {
             return creator.get() as T
         } catch (e: Exception) {

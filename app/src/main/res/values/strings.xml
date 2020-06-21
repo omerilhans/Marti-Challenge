@@ -22,6 +22,8 @@
     <string name="Generic_Error_404">Sunucuya istenen kaynağı bir nedenden dolayı bulamadı. Lütfen daha sonra tekrar deneyiniz.</string>
     <string name="Generic_Error_503">Sunucu şuan erişime kapalı. Lütfen daha sonra tekrar deneyiniz.</string>
 
+    <string name="Generic_title">Marker place title</string>
+
     <string name="Generic_version">v1.0 Marti Challenge</string>
 
 </resources>

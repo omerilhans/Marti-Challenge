@@ -31,9 +31,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation "junit:junit:$versions.junit.base"
-    androidTestImplementation "androidx.test.ext:junit:$versions.androidx.junit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.androidx.espresso"
+    testImplementation "junit:junit:$versions.test.junit4"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin.base"
     implementation "androidx.core:core-ktx:$versions.androidx.ktxcore"

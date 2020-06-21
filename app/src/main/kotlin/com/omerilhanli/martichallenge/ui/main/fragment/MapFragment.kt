@@ -87,7 +87,7 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
 
     private fun addMarkerAndMoveCamera(latLng: LatLng) {
         animateCamera(latLng)
-        googleMap?.addMarker(MarkerOptions().position(latLng))
+        googleMap?.addMarker(MarkerOptions().position(latLng).title(getString(R.string.Generic_title)))
         this.googleMap?.moveCamera(createCameraPosition(latLng))
     }
 

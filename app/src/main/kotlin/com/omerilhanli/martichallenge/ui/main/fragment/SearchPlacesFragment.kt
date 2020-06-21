@@ -3,6 +3,8 @@ package com.omerilhanli.martichallenge.ui.main.fragment
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,13 +75,32 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
     }
 
     private fun configObserving() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    with(it) {
+                        if (length == 0) {
+                            adapter.clear()
+                        }
+                    }
+                }
+            }
+        })
+
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
-            val placeType = viewModel.placeTypeText.value as String
+
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val locationStr = "${mLocation?.latitude},${mLocation?.longitude}"
-                viewModel.getPlaces(placeType, locationStr)
+                viewModel.getPlaces(viewModel.placeTypeText, locationStr)
                 context?.hideKeyboardFrom(view!!)
             }
+
             true
         }
 

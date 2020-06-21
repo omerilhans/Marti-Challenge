@@ -14,13 +14,14 @@ class MainViewModel
     val scheduler: SchedulerProvider
 ) : BaseViewModel<MainNavigator>() {
 
-    var placeDetailResponse: PlaceDetailResponse? = null
-    var placeTypeText: MutableLiveData<String> = MutableLiveData()
+    var placeDetailResponse: PlaceDetailResponse? = null // for DetailFragment
 
-    val placesResponse: MutableLiveData<PlacesResponse> = MutableLiveData()
-    val placeDetail: MutableLiveData<PlaceDetailResponse> = MutableLiveData()
+    val placesResponse: MutableLiveData<PlacesResponse> = MutableLiveData() // for SearchPlaceFragment
+    var placeTypeText: String = "" // for SearchPlaceFragment"
 
-    fun getPlaces(placeType: String, locationStr: String) {
+    val placeDetail: MutableLiveData<PlaceDetailResponse> = MutableLiveData() // for MapFragment
+
+    fun getPlaces(placeType: String, locationStr: String) { // for SearchPlaceFragment
         compositeDisposable.add(
             repository.getPlaces(placeType, locationStr)
                 .observeOn(scheduler.ui())
@@ -39,7 +40,7 @@ class MainViewModel
         )
     }
 
-    fun getPlaceDetails(placeId: String?) {
+    fun getPlaceDetails(placeId: String?) { // for MapFragment
         compositeDisposable.add(
             repository.getPlaceDetail(placeId)
                 .observeOn(scheduler.ui())
