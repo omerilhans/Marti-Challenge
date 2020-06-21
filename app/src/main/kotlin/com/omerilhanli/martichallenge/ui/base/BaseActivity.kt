@@ -1,60 +1,31 @@
 package com.omerilhanli.martichallenge.ui.base
 
-import android.app.AlertDialog
-import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.omerilhanli.ktx_common.dialog.AppAlert
-import com.omerilhanli.ktx_common.dialog.AppProgressBar
 import com.omerilhanli.martichallenge.R
 import dagger.android.support.DaggerAppCompatActivity
 import retrofit2.HttpException
+import java.net.UnknownHostException
+import javax.inject.Inject
 
 abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), BaseNavigator {
 
-    abstract fun getViewModel(): T
+    @Inject
+    lateinit var viewModel: T
 
-    private var viewModel: T? = null
-    private val appProgressBar =
-        AppProgressBar()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        this.viewModel = if (viewModel == null) getViewModel() else viewModel
-
-        this.viewModel?.isLoading?.observe(this, Observer { value ->
-            if (value)
-                showPd()
-            else
-                dismissPd()
-        })
+    fun replaceFragment(@IdRes containerViewId: Int, @NonNull fragment: Fragment, @Nullable tag: String) {
+        supportFragmentManager
+            .beginTransaction()
+            .disallowAddToBackStack()
+            .replace(containerViewId, fragment, tag)
+            .setCustomAnimations(R.anim.fadein, R.anim.fadeout)
+            .commitAllowingStateLoss()
     }
 
-    private fun showPd() {
-        try {
-            if (!isFinishing && !isDestroyed) {
-                if (appProgressBar.dialog == null || !appProgressBar.dialog!!.isShowing)
-                    appProgressBar.show(this)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun dismissPd() {
-        try {
-            if (!isFinishing && !isDestroyed)
-                appProgressBar.dialog?.dismiss()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    fun removeFragment(tag: String) {
+    private fun removeFragment(tag: String) {
         val fragmentManager = supportFragmentManager
         val fragment = fragmentManager.findFragmentByTag(tag)
         if (fragment != null) {
@@ -67,19 +38,6 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
         }
     }
 
-    fun replaceFragment(
-        @IdRes containerViewId: Int,
-        @NonNull fragment: Fragment,
-        @Nullable tag: String
-    ) {
-        supportFragmentManager
-            .beginTransaction()
-            .disallowAddToBackStack()
-            .replace(containerViewId, fragment, tag)
-            .setCustomAnimations(R.anim.fadein, R.anim.fadeout)
-            .commitAllowingStateLoss()
-    }
-
     override fun onFragmentDetached(tag: String) {
         removeFragment(tag)
     }
@@ -89,12 +47,7 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
     }
 
     private fun showErrorMessage(message: String) {
-        AppAlert.showAlert(
-            this,
-            getString(R.string.Generic_err),
-            message,
-            getString(R.string.Generic_ok)
-        )
+        AppAlert.showAlert(this, getString(R.string.Generic_err), message, getString(R.string.Generic_ok))
     }
 
     private fun getMessageFromError(error: Throwable): String {
@@ -113,6 +66,9 @@ abstract class BaseActivity<T : BaseViewModel<*>> : DaggerAppCompatActivity(), B
                 if (error.response()?.code() == 503) {
                     message = resources.getString(R.string.Generic_Error_503)
                 }
+            }
+            is UnknownHostException -> {
+                message = resources.getString(R.string.Generic_Network_Error)
             }
             else -> {
                 message = resources.getString(R.string.Generic_Error)

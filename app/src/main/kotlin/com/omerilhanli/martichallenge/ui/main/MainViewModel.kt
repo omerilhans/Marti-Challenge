@@ -1,6 +1,5 @@
 package com.omerilhanli.martichallenge.ui.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
 import com.omerilhanli.api_ktx.model.PlacesResponse
@@ -29,7 +28,6 @@ class MainViewModel
                 .subscribe({ response ->
                     placesResponse.value = response
                 }, { ex ->
-                    Log.e("tag-for-error", "operation failed.")
                     setIsLoading(false)
                     navigator?.handleError(ex)
                 }, {
@@ -49,7 +47,6 @@ class MainViewModel
                 .subscribe({ response ->
                     placeDetail.value = response
                 }, { ex ->
-                    Log.e("tag-for-error", "operation failed.")
                     setIsLoading(false)
                     navigator?.handleError(ex)
                 }, {

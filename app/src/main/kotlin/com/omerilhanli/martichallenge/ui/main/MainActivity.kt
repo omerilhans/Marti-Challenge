@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.omerilhanli.api_ktx.model.PlaceDetailResponse
 import com.omerilhanli.api_ktx.model.place.Place
 import com.omerilhanli.ktx_common.extensive.CHALLENGE_GITHUB_LINK
@@ -19,27 +18,15 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainViewModel>(), MainNavigator {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: MainViewModel
-    override fun getViewModel(): MainViewModel {
-        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        return viewModel
-    }
-
-    private lateinit var binding: ActivityMainBinding
     private lateinit var mSelectedPlace: Place
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityMainBinding>(
-            this,
-            R.layout.activity_main
-        ).apply {
-            lifecycleOwner = this@MainActivity
-            handler = this@MainActivity.viewModel
-        }
+       val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+            .apply {
+                lifecycleOwner = this@MainActivity
+                handler = this@MainActivity.viewModel
+            }
 
         viewModel.navigator = this
     }
@@ -76,27 +63,15 @@ class MainActivity : BaseActivity<MainViewModel>(), MainNavigator {
     }
 
     override fun showSearchPlacesFragment() {
-        replaceFragment(
-            R.id.frame_container,
-            SearchPlacesFragment.newInstance(),
-            SearchPlacesFragment.TAG
-        )
+        replaceFragment(R.id.frame_container, SearchPlacesFragment.newInstance(), SearchPlacesFragment::class.java.simpleName)
     }
 
     override fun showMapFragment(place: Place) {
         this.mSelectedPlace = place
-        replaceFragment(
-            R.id.frame_container,
-            MapFragment.newInstance(place),
-            MapFragment.TAG
-        )
+        replaceFragment(R.id.frame_container, MapFragment.newInstance(place), MapFragment::class.java.simpleName)
     }
 
     override fun showPlaceDetailFragment(placeDetailResponse: PlaceDetailResponse) {
-        replaceFragment(
-            R.id.frame_container,
-            DetailFragment.newInstance(placeDetailResponse),
-            DetailFragment.TAG
-        )
+        replaceFragment(R.id.frame_container, DetailFragment.newInstance(placeDetailResponse), DetailFragment::class.java.simpleName)
     }
 }

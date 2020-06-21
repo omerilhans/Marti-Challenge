@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -18,47 +17,27 @@ import com.omerilhanli.ktx_common.extensive.KEY_INTENT_PLACE
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.FragmentMapBinding
 import com.omerilhanli.martichallenge.ui.base.BaseFragment
+import com.omerilhanli.martichallenge.ui.main.MainActivity
 import com.omerilhanli.martichallenge.ui.main.MainViewModel
-import javax.inject.Inject
 
 class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentMapBinding
 
     private var googleMap: GoogleMap? = null
     private lateinit var place: Place
     private lateinit var placeDetailResponse: PlaceDetailResponse
 
-    override fun getViewModel(): MainViewModel {
-        viewModel = activity?.run {
-            ViewModelProvider(
-                activity!!,
-                factory
-            ).get(MainViewModel::class.java)
-        }
-            ?: throw Exception("Invalid Activity")
-        return viewModel
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate<FragmentMapBinding>(inflater, R.layout.fragment_map, container, false)
+            .apply {
+                lifecycleOwner = this@MapFragment
+                viewModel = this@MapFragment.viewModel
+                handler = this@MapFragment.viewModel
+            }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate<FragmentMapBinding>(
-            inflater,
-            R.layout.fragment_map,
-            container,
-            false
-        ).apply {
-            lifecycleOwner = this@MapFragment
-            viewModel = this@MapFragment.viewModel
-            handler = this@MapFragment.viewModel
-        }
+        viewModel.navigator = activity as MainActivity
 
         return binding.root
     }
@@ -87,10 +66,7 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
 
             with(it) {
                 placeDetailResponse = this
-                val latLng = LatLng(
-                    result?.geometry?.location?.lat ?: 0.0,
-                    result?.geometry?.location?.lng ?: 0.0
-                )
+                val latLng = LatLng(result?.geometry?.location?.lat ?: 0.0, result?.geometry?.location?.lng ?: 0.0)
                 addMarkerAndMoveCamera(latLng)
             }
         })
@@ -102,9 +78,10 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
 
     private fun createCameraPosition(latLng: LatLng): CameraUpdate {
         return CameraUpdateFactory.newCameraPosition(
-            CameraPosition.Builder().target(latLng).zoom(
-                16.0f
-            ).build()
+            CameraPosition.Builder()
+                .target(latLng)
+                .zoom(16.0f)
+                .build()
         )
     }
 
@@ -127,7 +104,6 @@ class MapFragment : BaseFragment<MainViewModel>(), OnMapReadyCallback,
     }
 
     companion object {
-        const val TAG: String = "MapFragment"
 
         fun newInstance(place: Place): MapFragment {
             val fragment = MapFragment()

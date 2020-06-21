@@ -13,8 +13,6 @@ object RepositoryModule {
     @Singleton
     @JvmStatic
     internal fun provideUserRepository(searchService: SearchService): SearchRepository {
-        return SearchRepository(
-            searchService
-        )
+        return SearchRepository(searchService)
     }
 }

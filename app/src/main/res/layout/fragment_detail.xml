@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:src="@drawable/icn_place"
-            app:bindPhotoReference="@{viewModel.placeDetail.result.photos[0].photo_reference}"
+            app:bindPhotoReference="@{viewModel.placeDetailResponse.result.photos[0].photo_reference}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/bg_with_border"
-            android:paddingTop="16dp"
+            android:paddingTop="4dp"
             android:paddingEnd="6dp"
-            android:paddingBottom="16dp"
+            android:paddingBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_place_detail_photo">

@@ -17,16 +17,8 @@ import retrofit2.http.Query
 interface SearchService {
 
     @GET(KEY_NEARBY_PLACES)
-    fun getPlaces(
-        @Query(KEY_LOCATION) location: String,
-        @Query(KEY_TYPE) type: String,
-        @Query(KEY_RADIUS) radius: Int = 5000,
-        @Query(KEY_TAG) key: String = BuildConfig.KEY_API
-    ): Observable<PlacesResponse>
+    fun getPlaces(@Query(KEY_LOCATION) location: String, @Query(KEY_TYPE) type: String, @Query(KEY_RADIUS) radius: Int = 5000, @Query(KEY_TAG) key: String = BuildConfig.KEY_API): Observable<PlacesResponse>
 
     @GET(KEY_PLACE_DETAILS)
-    fun getPlaceDetails(
-        @Query(KEY_PLACE_ID) placeId: String?,
-        @Query(KEY_TAG) key: String = BuildConfig.KEY_API
-    ): Observable<PlaceDetailResponse>
+    fun getPlaceDetails(@Query(KEY_PLACE_ID) placeId: String?, @Query(KEY_TAG) key: String = BuildConfig.KEY_API): Observable<PlaceDetailResponse>
 }

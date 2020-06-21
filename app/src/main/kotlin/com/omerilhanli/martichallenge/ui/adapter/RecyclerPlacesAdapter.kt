@@ -9,19 +9,12 @@ import com.omerilhanli.api_ktx.model.place.Place
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.ui.adapter.viewholder.PlacesViewHolder
 
-class RecyclerPlacesAdapter(var placeList: List<Place>) :
-    RecyclerView.Adapter<PlacesViewHolder>() {
+class RecyclerPlacesAdapter(var placeList: List<Place>) : RecyclerView.Adapter<PlacesViewHolder>() {
 
     var itemClickListener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
-        val binding: ViewDataBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_places,
-            parent,
-            false
-        )
-
+        val binding: ViewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_places, parent, false)
         return PlacesViewHolder(binding, itemClickListener)
     }
 

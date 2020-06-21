@@ -9,60 +9,38 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.omerilhanli.api_ktx.model.place.Place
-import com.omerilhanli.ktx_common.dialog.AppAlert
 import com.omerilhanli.ktx_common.extensive.KEY_PERMISSIONS_REQUEST_CODE
 import com.omerilhanli.ktx_common.util.PermissionUtil
 import com.omerilhanli.martichallenge.R
 import com.omerilhanli.martichallenge.databinding.FragmentSearchPlacesBinding
 import com.omerilhanli.martichallenge.extensive.bindAdapter
+import com.omerilhanli.martichallenge.extensive.hideKeyboardFrom
 import com.omerilhanli.martichallenge.extensive.openSetting
 import com.omerilhanli.martichallenge.ui.adapter.RecyclerPlacesAdapter
 import com.omerilhanli.martichallenge.ui.base.BaseFragment
+import com.omerilhanli.martichallenge.ui.main.MainActivity
 import com.omerilhanli.martichallenge.ui.main.MainViewModel
-import javax.inject.Inject
 
 class SearchPlacesFragment : BaseFragment<MainViewModel>() {
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    private lateinit var viewModel: MainViewModel
 
     private lateinit var binding: FragmentSearchPlacesBinding
     private lateinit var adapter: RecyclerPlacesAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var mLocation: Location? = null
 
-    override fun getViewModel(): MainViewModel {
-        viewModel = activity?.run {
-            ViewModelProvider(
-                activity!!,
-                factory
-            ).get(MainViewModel::class.java)
-        }
-            ?: throw Exception("Invalid Activity")
-        return viewModel
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate<FragmentSearchPlacesBinding>(inflater, R.layout.fragment_search_places, container, false)
+            .apply {
+                lifecycleOwner = this@SearchPlacesFragment
+                viewModel = this@SearchPlacesFragment.viewModel
+                handler = this@SearchPlacesFragment.viewModel
+            }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate<FragmentSearchPlacesBinding>(
-            inflater,
-            R.layout.fragment_search_places,
-            container,
-            false
-        ).apply {
-            lifecycleOwner = this@SearchPlacesFragment
-            viewModel = this@SearchPlacesFragment.viewModel
-            handler = this@SearchPlacesFragment.viewModel
-        }
+        viewModel.navigator = activity as MainActivity
 
         return binding.root
     }
@@ -100,6 +78,7 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val locationStr = "${mLocation?.latitude},${mLocation?.longitude}"
                 viewModel.getPlaces(placeType, locationStr)
+                context?.hideKeyboardFrom(view!!)
             }
             true
         }
@@ -117,11 +96,7 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == KEY_PERMISSIONS_REQUEST_CODE) {
             if ((grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
                 (grantResults[1] == PackageManager.PERMISSION_GRANTED)
@@ -131,13 +106,10 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
 
             } else {
                 // Permission denied.
-                Snackbar.make(
-                    view!!,
-                    R.string.Permission_denied_explanation,
-                    Snackbar.LENGTH_INDEFINITE
-                ).setAction(R.string.Generic_yes) {
-                    activity?.openSetting()
-                }.show()
+                Snackbar.make(view!!, R.string.Permission_denied_explanation, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.Generic_yes) {
+                        activity?.openSetting()
+                    }.show()
             }
         }
 
@@ -145,7 +117,6 @@ class SearchPlacesFragment : BaseFragment<MainViewModel>() {
     }
 
     companion object {
-        const val TAG: String = "SearchPlacesFragment"
 
         fun newInstance(): SearchPlacesFragment {
             return SearchPlacesFragment()

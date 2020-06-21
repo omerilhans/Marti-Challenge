@@ -21,10 +21,7 @@ class AppProgressBar {
 
         dialog = Dialog(context, R.style.ThemeDialog)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.window!!.setLayout(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT
-        )
+        dialog?.window!!.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT)
         dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.parseColor(context.getString(R.string.color_dialog_background))))
 
         val view = inflater.inflate(R.layout.app_progress_bar, null)

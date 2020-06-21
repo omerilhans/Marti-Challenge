@@ -1,19 +1,47 @@
 package com.omerilhanli.martichallenge.ui.base
 
-import android.content.Context
+import android.os.Bundle
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
+import com.omerilhanli.ktx_common.dialog.AppProgressBar
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-abstract class BaseFragment<T : ViewModel> : DaggerFragment() {
+abstract class BaseFragment<T : BaseViewModel<*>> : DaggerFragment() {
 
-    private var viewModel: T? = null
+    @Inject
+    lateinit var viewModel: T
 
-    abstract fun getViewModel(): T
+    private val appProgressBar = AppProgressBar()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel = getViewModel()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.isLoading.observe(this, Observer { value ->
+            if (value)
+                showPd()
+            else
+                dismissPd()
+        })
+    }
+
+    private fun showPd() {
+        try {
+            if (activity?.isFinishing == false && activity?.isDestroyed == false) {
+                if (appProgressBar.dialog == null || !appProgressBar.dialog!!.isShowing)
+                    appProgressBar.show(requireContext())
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun dismissPd() {
+        try {
+            if (activity?.isFinishing == false && activity?.isDestroyed == false)
+                appProgressBar.dialog?.dismiss()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun showToast(message: String) {

@@ -8,9 +8,7 @@ object AppAlert {
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
         builder.setTitle(title)
         builder.setMessage(message)
-        builder.setPositiveButton(buttonTitle) { dialog, _ ->
-            dialog.dismiss()
-        }
+        builder.setPositiveButton(buttonTitle) { dialog, _ -> dialog.dismiss() }
         builder.show()
     }
 }
